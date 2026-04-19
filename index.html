@@ -4,7 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Professional e-portfolio of Ophelia Ivy Mensah, emerging student affairs professional and M.Ed. candidate at Bowling Green State University." />
+  <meta name="theme-color" content="#ffffff" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ophelia Ivy Mensah — Professional Portfolio" />
+  <meta property="og:description" content="Professional e-portfolio of Ophelia Ivy Mensah, emerging student affairs professional and M.Ed. candidate at Bowling Green State University." />
+  <meta property="og:image" content="assets/images/CHICAGO.Jpeg" />
+  <meta property="og:image:alt" content="Ophelia Ivy Mensah smiling in front of Cloud Gate in Chicago." />
+  <meta property="og:site_name" content="Ophelia Ivy Mensah Portfolio" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ophelia Ivy Mensah — Professional Portfolio" />
+  <meta name="twitter:description" content="Professional e-portfolio of Ophelia Ivy Mensah, emerging student affairs professional and M.Ed. candidate at Bowling Green State University." />
+  <meta name="twitter:image" content="assets/images/CHICAGO.Jpeg" />
   <title>Ophelia Ivy Mensah — Professional Portfolio</title>
+
+  <script>
+    (function normalizePortfolioRoute() {
+      var hash = window.location.hash.replace(/^#\/?/, '');
+      var path = window.location.pathname;
+      var knownPages = ['about', 'resume', 'competencies', 'artifacts', 'gallery', 'contact'];
+
+      if (hash && knownPages.indexOf(hash) !== -1) {
+        window.history.replaceState({}, '', '/' + hash + window.location.search);
+        return;
+      }
+
+      if (!/\/index\.html$/.test(path)) return;
+
+      var cleanPath = path.replace(/index\.html$/, '');
+      window.history.replaceState({}, '', cleanPath + window.location.search + window.location.hash);
+    })();
+  </script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,13 +50,29 @@
       theme: {
         extend: {
           colors: {
-            ink:   '#232323',
-            brown: { DEFAULT: '#685D54', dark: '#4A3E35' },
-            muted: '#5C524A',
-            taupe: '#A39382',
-            cream: '#E5DED2',
-            ivory: '#FBF7F4',
-            focusring: '#1A5E9C',
+            page:         'rgb(var(--color-page) / <alpha-value>)',
+            surface:      'rgb(var(--color-surface) / <alpha-value>)',
+            soft:         'rgb(var(--color-soft) / <alpha-value>)',
+            primary:      'rgb(var(--color-primary) / <alpha-value>)',
+            secondary:    'rgb(var(--color-secondary) / <alpha-value>)',
+            tertiary:     'rgb(var(--color-tertiary) / <alpha-value>)',
+            accent: {
+              DEFAULT:    'rgb(var(--color-accent) / <alpha-value>)',
+              strong:     'rgb(var(--color-accent-strong) / <alpha-value>)',
+            },
+            onaccent:     'rgb(var(--color-on-accent) / <alpha-value>)',
+            line:         'rgb(var(--color-line) / <alpha-value>)',
+            'line-strong':'rgb(var(--color-line-strong) / <alpha-value>)',
+            ink:          'rgb(var(--color-ink) / <alpha-value>)',
+            brown: {
+              DEFAULT:    'rgb(var(--color-accent) / <alpha-value>)',
+              dark:       'rgb(var(--color-accent-strong) / <alpha-value>)',
+            },
+            muted:        'rgb(var(--color-secondary) / <alpha-value>)',
+            taupe:        'rgb(var(--color-tertiary) / <alpha-value>)',
+            cream:        'rgb(var(--color-soft) / <alpha-value>)',
+            ivory:        'rgb(var(--color-on-accent) / <alpha-value>)',
+            focusring:    'rgb(var(--color-focusring) / <alpha-value>)',
           },
           fontFamily: {
             serif: ['"Playfair Display"', 'Georgia', 'serif'],
@@ -48,9 +93,16 @@
 
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body class="bg-ivory text-ink font-sans antialiased">
+<body class="bg-page text-primary font-sans antialiased">
   <div id="root"></div>
 
-  <script type="text/babel" src="assets/js/app.jsx" data-type="module"></script>
+  <script type="text/babel" src="assets/js/pages/HomePage.jsx"></script>
+  <script type="text/babel" src="assets/js/pages/AboutPage.jsx"></script>
+  <script type="text/babel" src="assets/js/pages/ResumePage.jsx"></script>
+  <script type="text/babel" src="assets/js/pages/CompetenciesPage.jsx"></script>
+  <script type="text/babel" src="assets/js/pages/ArtifactsPage.jsx"></script>
+  <script type="text/babel" src="assets/js/pages/ContactPage.jsx"></script>
+  <script type="text/babel" src="assets/js/pages/GalleryPage.jsx"></script>
+  <script type="text/babel" src="assets/js/app.jsx"></script>
 </body>
 </html>
