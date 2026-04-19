@@ -16,11 +16,11 @@ function CompetenciesPage({ navigate }) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14" role="list" aria-label="Competency tiers">
           {TIERS.map(t => (
-            <div key={t.key} role="listitem" className={`rounded-xl p-5 border ${t.key === 'exemplary' ? 'bg-accent text-onaccent border-accent' : t.key === 'proficient' ? 'bg-secondary text-onaccent border-secondary' : 'bg-surface text-primary border-line'}`}>
+            <LiftOnHover key={t.key} role="listitem" className={`rounded-xl p-5 border ${t.key === 'exemplary' ? 'bg-accent text-onaccent border-accent' : t.key === 'proficient' ? 'bg-secondary text-onaccent border-secondary' : 'bg-surface text-primary border-line'}`}>
               <i className={`fa-solid ${t.icon} text-xl mb-3 block ${t.key === 'foundational' ? 'text-accent' : 'text-onaccent/75'}`} aria-hidden="true"></i>
               <h2 className={`font-serif text-lg font-bold mb-1 ${t.key === 'foundational' ? 'text-primary' : ''}`}>{t.label}</h2>
               <p className={`text-xs leading-relaxed ${t.key === 'foundational' ? 'text-secondary' : 'text-onaccent/70'}`}>{t.desc}</p>
-            </div>
+            </LiftOnHover>
           ))}
         </div>
 

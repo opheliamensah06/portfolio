@@ -38,7 +38,7 @@ function ContactPage() {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
+          <Reveal>
             <h2 className="font-serif text-xl font-bold text-primary mb-6">Contact Information</h2>
             <div className="space-y-3 mb-8">
               {[
@@ -64,9 +64,9 @@ function ContactPage() {
               <p className="font-serif italic text-secondary text-sm leading-relaxed">"Guided by faith, accountability, and integrity, I champion equity, fairness, and continuous learning, supporting each unique journey from transition to purpose."</p>
               <footer className="mt-2 text-xs text-tertiary">— Ophelia Ivy Mensah, Mission Statement</footer>
             </blockquote>
-          </div>
+          </Reveal>
 
-          <div className="bg-surface border border-line rounded-2xl p-6 md:p-8 shadow-sm shadow-ink/5">
+          <Reveal className="bg-surface border border-line rounded-2xl p-6 md:p-8 shadow-sm shadow-ink/5" delay={0.06}>
             <h2 className="font-serif text-xl font-bold text-primary mb-2">Send a Message</h2>
             <p className="text-sm text-secondary mb-6">Use the form below to draft an email message directly to me.</p>
 
@@ -105,14 +105,14 @@ function ContactPage() {
                 {errors.message && <p id="message-error" className="mt-1.5 text-sm text-red-600">{errors.message}</p>}
               </div>
 
-              <button type="submit"
+              <LiftOnHover as="button" type="submit"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white min-h-[48px] shadow-[0_16px_34px_rgba(121,85,72,0.28)] transition-all hover:shadow-[0_18px_40px_rgba(121,85,72,0.34)] hover:-translate-y-0.5"
                 style={{ background: 'linear-gradient(135deg, rgb(var(--color-accent)), rgb(var(--color-accent-strong)))' }}>
                 <i className="fa-solid fa-paper-plane text-xs" aria-hidden="true"></i>
                 Draft Email
-              </button>
+              </LiftOnHover>
             </form>
-          </div>
+          </Reveal>
         </div>
       </div>
     </div>

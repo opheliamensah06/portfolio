@@ -29,13 +29,13 @@ function AboutPage() {
           </div>
         </div>
 
-        <section aria-labelledby="mission-h" className="bg-accent text-onaccent rounded-2xl p-8 md:p-12 mb-20">
+        <Reveal as="section" aria-labelledby="mission-h" className="bg-accent text-onaccent rounded-2xl p-8 md:p-12 mb-20">
           <p className="text-xs font-bold tracking-[.22em] uppercase text-onaccent/50 mb-3">My Professional Mission</p>
           <h2 id="mission-h" className="font-serif text-2xl font-bold text-onaccent mb-6">Mission Statement</h2>
           <blockquote className="font-serif text-lg md:text-xl italic leading-relaxed text-onaccent/90 border-l-4 border-onaccent/30 pl-6">
             "My mission is to empower diverse students towards autonomy and self-discovery through empathetic guidance, fostering deep relationships, and collaborative communities. Guided by faith, accountability, and integrity, I champion equity, fairness, and continuous learning, supporting each unique journey from transition to purpose and navigating the evolving educational landscape with unwavering service."
           </blockquote>
-        </section>
+        </Reveal>
 
         <section aria-labelledby="about-break-professional" className="mb-20">
           <div className="max-w-4xl mx-auto">
@@ -53,13 +53,13 @@ function AboutPage() {
           <p className="text-secondary mb-8 text-xs font-bold tracking-[.18em] uppercase">Core Beliefs</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {PERSONAL_VALUES.map(v => (
-              <div key={v.name} className="bg-surface border border-line rounded-xl p-6 hover:shadow-sm transition-shadow">
+              <LiftOnHover key={v.name} className="bg-surface border border-line rounded-xl p-6 hover:shadow-sm transition-shadow">
                 <div className="w-10 h-10 bg-soft rounded-full flex items-center justify-center mb-4">
                   <i className={`fa-solid ${v.icon} text-accent`} aria-hidden="true"></i>
                 </div>
                 <h3 className="font-serif font-bold text-primary mb-2">{v.name}</h3>
                 <p className="text-secondary text-sm leading-relaxed">{v.desc}</p>
-              </div>
+              </LiftOnHover>
             ))}
           </div>
         </section>
@@ -80,13 +80,13 @@ function AboutPage() {
           <p className="text-secondary mb-8 text-xs font-bold tracking-[.18em] uppercase">Professional Commitments</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {PROFESSIONAL_VALUES.map(v => (
-              <div key={v.name} className="bg-surface border border-line rounded-xl p-6 hover:shadow-sm transition-shadow">
+              <LiftOnHover key={v.name} className="bg-surface border border-line rounded-xl p-6 hover:shadow-sm transition-shadow">
                 <div className="w-10 h-10 bg-soft rounded-full flex items-center justify-center mb-4">
                   <i className={`fa-solid ${v.icon} text-accent`} aria-hidden="true"></i>
                 </div>
                 <h3 className="font-serif font-bold text-primary mb-2">{v.name}</h3>
                 <p className="text-secondary text-sm leading-relaxed">{v.desc}</p>
-              </div>
+              </LiftOnHover>
             ))}
           </div>
         </section>

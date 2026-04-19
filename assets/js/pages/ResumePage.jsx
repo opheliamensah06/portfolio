@@ -22,7 +22,7 @@ function ResumePage() {
           </a>
         </div>
 
-        <div className="bg-accent text-onaccent rounded-xl p-5 mb-10 flex flex-wrap gap-4 justify-center text-sm">
+        <Reveal className="bg-accent text-onaccent rounded-xl p-5 mb-10 flex flex-wrap gap-4 justify-center text-sm">
           {[
             { icon: 'fa-envelope', text: 'ophelim@bgsu.edu', href: 'mailto:ophelim@bgsu.edu' },
             { icon: 'fa-location-dot', text: 'Bowling Green, OH', href: null },
@@ -33,7 +33,7 @@ function ResumePage() {
               {c.href ? <a href={c.href} className="hover:text-onaccent transition-colors">{c.text}</a> : c.text}
             </span>
           ))}
-        </div>
+        </Reveal>
 
         <RSection title="Education" icon="fa-graduation-cap">
           <div className="space-y-4">

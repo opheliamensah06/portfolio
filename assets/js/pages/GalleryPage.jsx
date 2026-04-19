@@ -23,7 +23,7 @@ function GalleryPage() {
               {sec.photoIds.map(photoId => {
                 const image = IMAGE_LIBRARY[photoId];
                 return (
-                  <article key={photoId} className="space-y-3">
+                  <Reveal key={photoId} className="space-y-3" amount={0.1}>
                     <PortfolioImage image={image} className="aspect-[4/3]" />
                     <div className="px-1">
                       <h3 className="font-serif text-lg text-primary">{image.caption}</h3>
@@ -34,7 +34,7 @@ function GalleryPage() {
                          'A program or event environment centered on student engagement.'}
                       </p>
                     </div>
-                  </article>
+                  </Reveal>
                 );
               })}
             </div>

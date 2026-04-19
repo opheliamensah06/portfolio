@@ -4,9 +4,12 @@ function HomePage({ navigate }) {
   return (
     <div>
       {/* ── Hero ── */}
-      <section
+      <motion.section
         aria-labelledby="hero-name"
         className="relative overflow-hidden px-4 sm:px-6 lg:px-8"
+        initial={APP_MOTION_ENABLED ? { opacity: 0, y: 18 } : undefined}
+        animate={APP_MOTION_ENABLED ? { opacity: 1, y: 0 } : undefined}
+        transition={APP_MOTION_ENABLED ? { duration: 0.55, ease: APP_EASE } : undefined}
         style={{ background: 'radial-gradient(circle at top left, rgba(var(--color-soft),0.96), rgba(var(--color-page),0.98) 42%, rgba(var(--color-page),1) 100%)' }}
       >
         <div className="absolute inset-x-0 top-0 h-48" style={{ background: 'linear-gradient(180deg, rgba(var(--color-accent),0.1), transparent)' }} aria-hidden="true"></div>
@@ -24,18 +27,20 @@ function HomePage({ navigate }) {
                 Graduate Student Affairs Professional and M.Ed. candidate at BGSU, committed to advising, inclusive programming, and student-centered practice grounded in empathy, integrity, and continuous learning.
               </p>
               <div className="flex flex-wrap gap-3">
-                <button onClick={() => go('competencies')}
+                <LiftOnHover as="button"
+                  onClick={() => go('competencies')}
                   className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-white min-h-[48px] shadow-[0_16px_34px_rgba(121,85,72,0.28)] transition-all hover:shadow-[0_18px_40px_rgba(121,85,72,0.34)] hover:-translate-y-0.5"
                   style={{ background: 'linear-gradient(135deg, rgb(var(--color-accent)), rgb(var(--color-accent-strong)))' }}>
                   <i className="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                   View My Work
-                </button>
-                <button onClick={() => go('about')}
+                </LiftOnHover>
+                <LiftOnHover as="button"
+                  onClick={() => go('about')}
                   className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm min-h-[48px] text-accent hover:text-accent-strong transition-all"
                   style={{ border: '1px solid rgba(var(--color-accent), 0.18)', background: 'linear-gradient(135deg, rgba(var(--color-soft), 0.96), rgb(var(--color-surface)))' }}>
                   <i className="fa-solid fa-user text-xs" aria-hidden="true"></i>
                   About Me
-                </button>
+                </LiftOnHover>
               </div>
             </div>
 
@@ -73,26 +78,27 @@ function HomePage({ navigate }) {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* ── Mission teaser ── */}
-      <section aria-labelledby="mission-teaser" className="bg-accent text-onaccent py-16 px-4 sm:px-6 lg:px-8">
+      <Reveal as="section" delay={0.05} aria-labelledby="mission-teaser" className="bg-accent text-onaccent py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-xs font-bold tracking-[.22em] uppercase text-onaccent/50 mb-4">Mission Statement</p>
           <h2 id="mission-teaser" className="sr-only">Mission Statement</h2>
           <blockquote className="font-serif text-xl md:text-2xl italic leading-relaxed text-onaccent/90">
             "My mission is to empower diverse students towards autonomy and self-discovery through empathetic guidance, fostering deep relationships, and collaborative communities."
           </blockquote>
-          <button onClick={() => go('about')}
+          <LiftOnHover as="button"
+            onClick={() => go('about')}
             className="mt-6 text-sm font-semibold text-onaccent/60 hover:text-onaccent underline underline-offset-4 transition-colors"
             aria-label="Read full mission statement on About Me page">
             Read full statement →
-          </button>
+          </LiftOnHover>
         </div>
-      </section>
+      </Reveal>
 
       {/* ── Three pillars ── */}
-      <section aria-labelledby="pillars-heading" className="py-20 px-4 sm:px-6 lg:px-8">
+      <Reveal as="section" delay={0.08} aria-labelledby="pillars-heading" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-xs font-bold tracking-[.22em] uppercase text-tertiary mb-3">Professional Identity</p>
@@ -105,20 +111,20 @@ function HomePage({ navigate }) {
               { icon: 'fa-people-group', title: 'Leader', desc: 'Building mentoring systems, co-curricular programming curricula, and feedback cultures that extend leadership impact, center student voice, and foster a sense of belonging.' },
               { icon: 'fa-clipboard-list', title: 'Program Coordinator', desc: 'Designing and coordinating large-scale events, experiential trips, co-curricular programming series, and recognition ceremonies that build community, belonging, and student engagement.' },
             ].map(p => (
-              <div key={p.title} className="bg-surface border border-line rounded-xl p-8 text-center hover:shadow-md transition-shadow">
+              <LiftOnHover key={p.title} className="bg-surface border border-line rounded-xl p-8 text-center hover:shadow-md transition-shadow">
                 <div className="w-14 h-14 bg-soft rounded-full flex items-center justify-center mx-auto mb-5">
                   <i className={`fa-solid ${p.icon} text-accent text-xl`} aria-hidden="true"></i>
                 </div>
                 <h3 className="font-serif text-xl font-bold text-primary mb-3">{p.title}</h3>
                 <p className="text-secondary text-sm leading-relaxed">{p.desc}</p>
-              </div>
+              </LiftOnHover>
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {/* ── Quick nav cards ── */}
-      <section aria-labelledby="quicknav-heading" className="py-12 px-4 sm:px-6 lg:px-8 bg-soft/45">
+      <Reveal as="section" delay={0.1} aria-labelledby="quicknav-heading" className="py-12 px-4 sm:px-6 lg:px-8 bg-soft/45">
         <div className="max-w-6xl mx-auto">
           <h2 id="quicknav-heading" className="sr-only">Quick Navigation</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -129,15 +135,15 @@ function HomePage({ navigate }) {
               { p: 'gallery', icon: 'fa-images', label: 'Gallery' },
               { p: 'contact', icon: 'fa-envelope', label: 'Contact' },
             ].map(item => (
-              <button key={item.p} onClick={() => go(item.p)}
+              <LiftOnHover as="button" key={item.p} onClick={() => go(item.p)}
                 className="flex flex-col items-center gap-3 p-6 bg-surface border border-line rounded-xl hover:border-accent hover:shadow-sm transition-all group min-h-[44px]">
                 <i className={`fa-solid ${item.icon} text-2xl text-tertiary group-hover:text-accent transition-colors`} aria-hidden="true"></i>
                 <span className="font-semibold text-sm text-secondary group-hover:text-accent transition-colors">{item.label}</span>
-              </button>
+              </LiftOnHover>
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
     </div>
   );
 }

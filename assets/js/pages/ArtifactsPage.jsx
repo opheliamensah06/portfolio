@@ -27,7 +27,7 @@ function ArtifactsPage() {
           {shown.map(a => {
             const fileIcon = a.type === 'PDF' ? 'fa-file-pdf' : a.type === 'PPTX' ? 'fa-file-powerpoint' : 'fa-file-word';
             return (
-              <article key={a.id} role="listitem" className="bg-surface border border-line rounded-xl p-6 flex flex-col hover:shadow-md transition-shadow">
+              <LiftOnHover key={a.id} role="listitem" className="bg-surface border border-line rounded-xl p-6 flex flex-col hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-10 h-10 bg-soft rounded-lg flex items-center justify-center shrink-0">
                     <i className={`fa-solid ${fileIcon} text-accent`} aria-hidden="true"></i>
@@ -47,7 +47,7 @@ function ArtifactsPage() {
                   Preview <span className="sr-only">{a.name}</span>
                   <span aria-hidden="true">({a.type})</span>
                 </button>
-              </article>
+              </LiftOnHover>
             );
           })}
         </div>

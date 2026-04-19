@@ -1,4 +1,25 @@
     const { useState, useEffect, useRef, useCallback } = React;
+    const MotionReact = window.MotionReact || {};
+    const MOTION_PROP_NAMES = new Set([
+      'animate', 'exit', 'initial', 'layout', 'layoutId', 'transition',
+      'variants', 'viewport', 'whileHover', 'whileInView', 'whileTap'
+    ]);
+    const createMotionFallback = () => new Proxy({}, {
+      get: (_, tag) => React.forwardRef(function MotionFallback(props, ref) {
+        const cleanProps = {};
+
+        Object.entries(props).forEach(([key, value]) => {
+          if (!MOTION_PROP_NAMES.has(key)) cleanProps[key] = value;
+        });
+
+        return React.createElement(tag, { ...cleanProps, ref }, props.children);
+      }),
+    });
+    const motion = MotionReact.motion || createMotionFallback();
+    const AnimatePresence = MotionReact.AnimatePresence || React.Fragment;
+    const useReducedMotion = MotionReact.useReducedMotion || (() => false);
+    const APP_MOTION_ENABLED = Boolean(MotionReact.motion);
+    const APP_EASE = [0.22, 1, 0.36, 1];
 
     /* ============================================================
        DATA
@@ -223,7 +244,7 @@
       { id:7,  name:'Community Meal Financial Literacy Doc',     comp:'Leadership',                  abbr:'LEAD', level:'exemplary', desc:'Comprehensive event planning document for the March 2026 Community Meal including a gallery walk activity on financial decision-making.', type:'DOCX' },
       { id:8,  name:'March Community Meal Email Template',       comp:'Leadership',                  abbr:'LEAD', level:'exemplary', desc:'Student outreach email template created for the March 2026 Community Meal financial literacy program.', type:'DOCX' },
       { id:9,  name:'HSOC Event Planning Form',                  comp:'Leadership',                  abbr:'LEAD', level:'exemplary', desc:'Comprehensive mentoring tool developed to guide Honors Students of Color leaders through every phase of event management.', type:'DOCX' },
-      { id:10, name:'Capstone Research Presentation',            comp:'Research',                    abbr:'RES',  level:'exemplary', desc:'Capstone graduate research presentation synthesizing findings on equity, access, and student success in higher education — presented as part of M.Ed. program completion at BGSU.', type:'PPTX', file:'assets/docs/1 Ophelia Ivy Mensah Capstone.pptx', featured:true },
+      { id:10, name:'Capstone Research Presentation',            comp:'Research',                    abbr:'RES',  level:'exemplary', desc:'Capstone graduate research presentation synthesizing findings on equity, access, and student success in higher education — presented as part of M.Ed. program completion at BGSU.', type:'PPTX', file:'/assets/docs/1 Ophelia Ivy Mensah Capstone.pptx', featured:true },
     ];
 
     const LEVEL_STYLES = {
@@ -234,62 +255,62 @@
 
     const IMAGE_LIBRARY = {
       chicagoPortrait: {
-        src: 'assets/images/CHICAGO.Jpeg',
+        src: '/assets/images/CHICAGO.Jpeg',
         alt: 'Ophelia Ivy Mensah smiling in front of Cloud Gate in Chicago.',
         caption: 'Chicago experiential learning trip',
       },
       chicagoGroup: {
-        src: 'assets/images/CHICAGO 1.jpeg',
+        src: '/assets/images/CHICAGO 1.jpeg',
         alt: 'Ophelia with a student group visiting Cloud Gate in Chicago.',
         caption: 'Travel-based community building',
       },
       honorsLounge: {
-        src: 'assets/images/IMG_6832.JPG',
+        src: '/assets/images/IMG_6832.JPG',
         alt: 'Students gathered in a campus lounge during an Honors community event.',
         caption: 'Honors Learning Community programming',
       },
       bgsuMascot: {
-        src: 'assets/images/IMG_7415.JPEG',
+        src: '/assets/images/IMG_7415.JPEG',
         alt: 'Ophelia Ivy Mensah posing with the BGSU mascot and a colleague.',
         caption: 'Campus pride and student engagement',
       },
       marsDiversity: {
-        src: 'assets/images/IMG_7610.JPG',
+        src: '/assets/images/IMG_7610.JPG',
         alt: 'A diverse student affairs group standing together in front of a presentation screen.',
         caption: 'Student affairs leadership and collaboration',
       },
       museumPeers: {
-        src: 'assets/images/IMG_6897.jpg',
+        src: '/assets/images/IMG_6897.jpg',
         alt: 'Ophelia with peers seated in front of museum exhibits during a learning experience.',
         caption: 'Informal learning and reflection',
       },
       museumSelfie: {
-        src: 'assets/images/IMG_2565.JPG',
+        src: '/assets/images/IMG_2565.JPG',
         alt: 'Ophelia with peers inside a museum during an educational visit.',
         caption: 'Experiential learning off campus',
       },
       stadiumTrip: {
-        src: 'assets/images/img_0293-converted.jpg',
+        src: '/assets/images/img_0293-converted.jpg',
         alt: 'A large BGSU group photo at a stadium during a student trip.',
         caption: 'Large-scale student trip coordination',
       },
       ocpaBackdropSolo: {
-        src: 'assets/images/img_2425-converted.jpg',
+        src: '/assets/images/img_2425-converted.jpg',
         alt: 'Ophelia standing in front of an ACPA conference backdrop.',
         caption: 'Professional conference participation',
       },
       ocpaBackdropGroup: {
-        src: 'assets/images/img_2424-converted.jpg',
+        src: '/assets/images/img_2424-converted.jpg',
         alt: 'Ophelia with colleagues in front of an ACPA conference backdrop.',
         caption: 'Professional network and collaboration',
       },
       honorsDiscussion: {
-        src: 'assets/images/img_1113-converted.jpg',
+        src: '/assets/images/img_1113-converted.jpg',
         alt: 'Students listening during a discussion-based community event in an Honors lounge.',
         caption: 'Dialogue-centered student engagement',
       },
       ocpaPresentation: {
-        src: 'assets/images/img_5595-2png-converted.jpg',
+        src: '/assets/images/img_5595-2png-converted.jpg',
         alt: 'Ophelia standing near a projected OCPA presentation slide.',
         caption: 'Conference presentation on equity',
       },
@@ -395,6 +416,73 @@
         localStorage.setItem('theme', theme);
       }, [theme]);
       return [theme, () => setTheme(v => v === 'dark' ? 'light' : 'dark')];
+    }
+
+    function PageTransition({ page, children }) {
+      const prefersReducedMotion = useReducedMotion();
+
+      if (!APP_MOTION_ENABLED || prefersReducedMotion) {
+        return <div key={page}>{children}</div>;
+      }
+
+      return (
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={page}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.42, ease: APP_EASE }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      );
+    }
+
+    function Reveal({ as = 'div', children, className, delay = 0, amount = 0.2, ...rest }) {
+      const prefersReducedMotion = useReducedMotion();
+
+      if (!APP_MOTION_ENABLED || prefersReducedMotion) {
+        return React.createElement(as, { ...rest, ...(className ? { className } : {}) }, children);
+      }
+
+      const Component = motion[as] || motion.div;
+
+      return (
+        <Component
+          {...rest}
+          className={className}
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount }}
+          transition={{ duration: 0.5, delay, ease: APP_EASE }}
+        >
+          {children}
+        </Component>
+      );
+    }
+
+    function LiftOnHover({ as = 'div', children, className, ...rest }) {
+      const prefersReducedMotion = useReducedMotion();
+
+      if (!APP_MOTION_ENABLED || prefersReducedMotion) {
+        return React.createElement(as, { ...rest, ...(className ? { className } : {}) }, children);
+      }
+
+      const Component = motion[as] || motion.div;
+
+      return (
+        <Component
+          {...rest}
+          className={className}
+          whileHover={{ y: -4, scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          transition={{ duration: 0.22, ease: 'easeOut' }}
+        >
+          {children}
+        </Component>
+      );
     }
 
     /* ============================================================
@@ -595,8 +683,10 @@
       const viewerUrl = React.useMemo(() => {
         if (!artifact.file) return null;
         if (artifact.type === 'PDF') return artifact.file;
-        const base = window.location.href.replace(/\/[^/]*(\?.*)?$/, '/');
-        const encoded = encodeURIComponent(base + artifact.file);
+        const assetUrl = artifact.file.startsWith('/')
+          ? `${window.location.origin}${artifact.file}`
+          : `${window.location.href.replace(/\/[^/]*(\?.*)?$/, '/')}${artifact.file}`;
+        const encoded = encodeURIComponent(assetUrl);
         if (artifact.type === 'PPTX') return `https://view.officeapps.live.com/op/embed.aspx?src=${encoded}`;
         if (artifact.type === 'DOCX') return `https://docs.google.com/viewer?url=${encoded}&embedded=true`;
         return null;
@@ -671,11 +761,24 @@
           <SkipLink />
           <Navbar page={page} navigate={navigate} theme={theme} toggleTheme={toggleTheme} />
           <main id="main" tabIndex={-1} className="flex-1 outline-none">
-            {PAGES[page] || PAGES.home}
+            <PageTransition page={page}>
+              {PAGES[page] || PAGES.home}
+            </PageTransition>
           </main>
           <Footer navigate={navigate} />
         </div>
       );
     }
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    const mountApp = () => {
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    };
+
+    if (APP_MOTION_ENABLED) {
+      mountApp();
+    } else {
+      window.addEventListener('motionready', mountApp, { once: true });
+      window.setTimeout(() => {
+        if (!document.getElementById('root')?.hasChildNodes()) mountApp();
+      }, 1200);
+    }
