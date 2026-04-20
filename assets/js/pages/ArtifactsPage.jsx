@@ -1,7 +1,7 @@
 function ArtifactsPage() {
   const [filter, setFilter] = useState('all');
   const [preview, setPreview] = useState(null);
-  const FILTERS = ['all', 'exemplary', 'proficient', 'foundational'];
+  const FILTERS = ['all', ...new Set(ARTIFACTS.map(a => a.level))];
   const shown = filter === 'all' ? ARTIFACTS : ARTIFACTS.filter(a => a.level === filter);
 
   return (
@@ -11,7 +11,7 @@ function ArtifactsPage() {
         <SectionHeading
           eyebrow="Supporting Evidence"
           title="Artifacts"
-          subtitle="Nine artifacts from across graduate preparation, each linked to a specific ACPA/NASPA competency."
+          subtitle="Six selected artifacts from across graduate preparation, each backed by a file included in this portfolio."
         />
 
         <div className="flex flex-wrap gap-2 mb-10" role="group" aria-label="Filter artifacts by level">
@@ -27,27 +27,32 @@ function ArtifactsPage() {
           {shown.map(a => {
             const fileIcon = a.type === 'PDF' ? 'fa-file-pdf' : a.type === 'PPTX' ? 'fa-file-powerpoint' : 'fa-file-word';
             return (
-              <LiftOnHover key={a.id} role="listitem" className="bg-surface border border-line rounded-xl p-6 flex flex-col hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-10 h-10 bg-soft rounded-lg flex items-center justify-center shrink-0">
-                    <i className={`fa-solid ${fileIcon} text-accent`} aria-hidden="true"></i>
-                  </div>
-                  <span className="text-xs font-bold text-tertiary uppercase tracking-wider">{a.type}</span>
-                </div>
-                <div className="flex flex-wrap gap-1.5 mb-3">
-                  <Badge level={a.level} />
-                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-soft text-secondary border border-line/70">{a.abbr}</span>
-                </div>
-                <h2 className="font-serif font-bold text-primary mb-2 leading-snug text-base">{a.name}</h2>
-                <p className="text-secondary text-sm leading-relaxed flex-grow">{a.desc}</p>
-                <button onClick={() => setPreview(a)}
+              <div key={a.id} role="listitem">
+                <LiftOnHover
+                  as="button"
+                  type="button"
+                  onClick={() => setPreview(a)}
                   aria-label={`Preview ${a.name} — ${a.type}`}
-                  className="mt-5 flex items-center justify-center gap-2 w-full px-4 py-2.5 border border-accent text-accent rounded-lg text-sm font-semibold hover:bg-soft transition-colors min-h-[44px]">
-                  <i className="fa-solid fa-eye text-xs" aria-hidden="true"></i>
-                  Preview <span className="sr-only">{a.name}</span>
-                  <span aria-hidden="true">({a.type})</span>
-                </button>
-              </LiftOnHover>
+                  className="bg-surface border border-line rounded-xl p-6 flex flex-col hover:shadow-md transition-shadow text-left w-full focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 focus:ring-offset-page"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-10 h-10 bg-soft rounded-lg flex items-center justify-center shrink-0">
+                      <i className={`fa-solid ${fileIcon} text-accent`} aria-hidden="true"></i>
+                    </div>
+                    <span className="text-xs font-bold text-tertiary uppercase tracking-wider">{a.type}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    <Badge level={a.level} />
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-soft text-secondary border border-line/70">{a.abbr}</span>
+                  </div>
+                  <h2 className="font-serif font-bold text-primary mb-2 leading-snug text-base">{a.name}</h2>
+                  <p className="text-secondary text-sm leading-relaxed flex-grow">{a.desc}</p>
+                  <div className="mt-5 flex items-center gap-2 text-sm font-semibold text-accent">
+                    <i className="fa-solid fa-eye text-xs" aria-hidden="true"></i>
+                    <span>Preview {a.type}</span>
+                  </div>
+                </LiftOnHover>
+              </div>
             );
           })}
         </div>

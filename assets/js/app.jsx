@@ -235,16 +235,12 @@
     ];
 
     const ARTIFACTS = [
-      { id:1,  name:'Advising Philosophy Statement',             comp:'Advising & Supporting',       abbr:'AS',   level:'exemplary', desc:'A personal advising philosophy rooted in equity-mindedness, culturally responsive practice, relational trust, and student empowerment.', type:'PDF' },
-      { id:2,  name:'Fall Practicum Presentation (OAAP)',        comp:'Advising & Supporting',       abbr:'AS',   level:'exemplary', desc:'Slide presentation from the Fall 2025 practicum at the Office of Academic Advising and Planning showcasing caseload advising work.', type:'PPTX' },
-      { id:3,  name:'Student-Athlete Practicum Presentation',    comp:'Advising & Supporting',       abbr:'AS',   level:'exemplary', desc:'PowerPoint documenting Spring 2025 practicum at Student-Athlete Services — goal assessment, professional competencies, and supervisor reflections.', type:'PPTX' },
-      { id:4,  name:'Honors Project Interview Questions',        comp:'Advising & Supporting',       abbr:'AS',   level:'exemplary', desc:'Structured interview question template for the Honors Project video profile initiative, facilitating meaningful student self-reflection.', type:'DOCX' },
-      { id:5,  name:'Final Equity Audit Document',               comp:'Social Justice & Inclusion',  abbr:'SJI',  level:'exemplary', desc:'Scholarly equity audit examining BGSU\'s mandatory health insurance policy and its disproportionate impact on international students.', type:'DOCX' },
-      { id:6,  name:'OCPA Conference Presentation Slides',       comp:'Social Justice & Inclusion',  abbr:'SJI',  level:'exemplary', desc:'Presentation slides from the February 2026 OCPA Annual Conference on rethinking health insurance equity for international students.', type:'PPTX' },
-      { id:7,  name:'Community Meal Financial Literacy Doc',     comp:'Leadership',                  abbr:'LEAD', level:'exemplary', desc:'Comprehensive event planning document for the March 2026 Community Meal including a gallery walk activity on financial decision-making.', type:'DOCX' },
-      { id:8,  name:'March Community Meal Email Template',       comp:'Leadership',                  abbr:'LEAD', level:'exemplary', desc:'Student outreach email template created for the March 2026 Community Meal financial literacy program.', type:'DOCX' },
-      { id:9,  name:'HSOC Event Planning Form',                  comp:'Leadership',                  abbr:'LEAD', level:'exemplary', desc:'Comprehensive mentoring tool developed to guide Honors Students of Color leaders through every phase of event management.', type:'DOCX' },
-      { id:10, name:'Capstone Research Presentation',            comp:'Research',                    abbr:'RES',  level:'exemplary', desc:'Capstone graduate research presentation synthesizing findings on equity, access, and student success in higher education — presented as part of M.Ed. program completion at BGSU.', type:'PPTX', file:'/assets/docs/1 Ophelia Ivy Mensah Capstone.pptx', featured:true },
+      { id:1, name:'Advising Philosophy Statement',          comp:'Advising & Supporting',      abbr:'AS',   level:'exemplary', desc:'A personal advising philosophy rooted in equity-mindedness, culturally responsive practice, relational trust, and student empowerment.', type:'PDF', file:'/assets/docs/advising-philosophy-statement.pdf' },
+      { id:2, name:'Fall Practicum Presentation (OAAP)',     comp:'Advising & Supporting',      abbr:'AS',   level:'exemplary', desc:'Slide presentation from the Fall 2025 practicum at the Office of Academic Advising and Planning showcasing caseload advising work.', type:'PDF', file:'/assets/docs/fall-practicum-presentation-oaap.pdf' },
+      { id:3, name:'Student-Athlete Practicum Presentation', comp:'Advising & Supporting',      abbr:'AS',   level:'exemplary', desc:'PowerPoint documenting Spring 2025 practicum at Student-Athlete Services — goal assessment, professional competencies, and supervisor reflections.', type:'PDF', file:'/assets/docs/student-athlete-practicum-presentation.pdf' },
+      { id:4, name:'HSOC Event Planning Form',               comp:'Leadership',                 abbr:'LEAD', level:'exemplary', desc:'Comprehensive mentoring tool developed to guide Honors Students of Color leaders through every phase of event management.', type:'PDF', file:'/assets/docs/hsoc-event-planning-form.pdf' },
+      { id:5, name:'OCPA Conference Presentation Slides',    comp:'Social Justice & Inclusion', abbr:'SJI',  level:'exemplary', desc:'Presentation slides from the February 2026 OCPA Annual Conference on rethinking health insurance equity for international students.', type:'PDF', file:'/assets/docs/ocpa-conference-presentation-slides.pdf' },
+      { id:6, name:'Capstone Research Presentation',         comp:'Research',                   abbr:'RES',  level:'exemplary', desc:'Capstone graduate research presentation synthesizing findings on equity, access, and student success in higher education — presented as part of M.Ed. program completion at BGSU.', type:'PDF', file:'/assets/docs/capstone-research-presentation.pdf', featured:true },
     ];
 
     const LEVEL_STYLES = {
@@ -680,51 +676,46 @@
         };
       }, [closeOnEsc]);
 
-      const viewerUrl = React.useMemo(() => {
-        if (!artifact.file) return null;
-        if (artifact.type === 'PDF') return artifact.file;
-        const assetUrl = artifact.file.startsWith('/')
-          ? `${window.location.origin}${artifact.file}`
-          : `${window.location.href.replace(/\/[^/]*(\?.*)?$/, '/')}${artifact.file}`;
-        const encoded = encodeURIComponent(assetUrl);
-        if (artifact.type === 'PPTX') return `https://view.officeapps.live.com/op/embed.aspx?src=${encoded}`;
-        if (artifact.type === 'DOCX') return `https://docs.google.com/viewer?url=${encoded}&embedded=true`;
-        return null;
-      }, [artifact]);
-
       const fileIcon = artifact.type === 'PDF' ? 'fa-file-pdf' : artifact.type === 'PPTX' ? 'fa-file-powerpoint' : 'fa-file-word';
+      const pdfViewerUrl = artifact.type === 'PDF' && artifact.file
+        ? `${artifact.file}#toolbar=1&navpanes=1&scrollbar=1&view=FitH`
+        : null;
 
       return (
         <div
-          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] flex items-center justify-center p-3 sm:p-5"
           role="dialog" aria-modal="true" aria-label={`Preview: ${artifact.name}`}
           onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
-          <div className="bg-surface rounded-2xl w-full max-w-5xl flex flex-col shadow-2xl border border-line"
-            style={{ height: '88vh' }}>
+          <div
+            className="bg-white/95 rounded-[1.75rem] w-full max-w-[96rem] flex flex-col shadow-[0_35px_120px_rgba(0,0,0,0.45)] border border-white/70 overflow-hidden"
+            style={{ height: '92vh' }}
+          >
             {/* Header */}
-            <div className="flex items-center gap-3 px-6 py-4 border-b border-line shrink-0">
-              <i className={`fa-solid ${fileIcon} text-accent text-lg`} aria-hidden="true"></i>
-              <h2 className="font-serif font-bold text-primary text-lg flex-1 truncate">{artifact.name}</h2>
-              <span className="text-xs font-bold text-tertiary uppercase tracking-wider shrink-0">{artifact.type}</span>
+            <div className="flex items-center gap-4 px-6 sm:px-10 py-5 border-b border-slate-200 shrink-0 bg-white/92">
+              <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
+                <i className={`fa-solid ${fileIcon} text-accent text-lg`} aria-hidden="true"></i>
+              </div>
+              <h2 className="font-serif font-bold text-primary text-[1.65rem] sm:text-[1.95rem] leading-tight flex-1 truncate">{artifact.name}</h2>
+              <span className="text-sm font-bold text-tertiary uppercase tracking-[0.24em] shrink-0">{artifact.type}</span>
               <button onClick={onClose}
-                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-soft transition-colors text-secondary hover:text-accent ml-2 shrink-0"
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-secondary hover:text-accent ml-2 shrink-0"
                 aria-label="Close preview">
-                <i className="fa-solid fa-xmark" aria-hidden="true"></i>
+                <i className="fa-solid fa-xmark text-2xl" aria-hidden="true"></i>
               </button>
             </div>
             {/* Viewer */}
-            <div className="flex-1 overflow-hidden rounded-b-2xl">
-              {viewerUrl ? (
+            <div className="flex-1 overflow-hidden bg-[#525252]">
+              {pdfViewerUrl ? (
                 <iframe
-                  src={viewerUrl}
+                  src={pdfViewerUrl}
                   className="w-full h-full border-0"
                   title={`Preview of ${artifact.name}`}
                   allowFullScreen />
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-tertiary gap-4 py-16">
                   <i className="fa-solid fa-clock text-5xl opacity-30" aria-hidden="true"></i>
-                  <p className="font-serif text-xl text-secondary">Preview coming soon</p>
-                  <p className="text-sm text-tertiary text-center max-w-sm leading-relaxed">This artifact file will be available for preview before final submission.</p>
+                  <p className="font-serif text-xl text-secondary">Preview unavailable</p>
+                  <p className="text-sm text-tertiary text-center max-w-sm leading-relaxed">Only embedded PDF previews are currently supported here.</p>
                 </div>
               )}
             </div>
